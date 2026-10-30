@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CISC vs RISC: one task, two instruction sets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="refined.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="pagenav" aria-label="Pages">
+    <a href="index.html" aria-current="page">CISC vs RISC</a>
+    <a href="dram.html">DRAM Refresh</a>
+  </nav>
+  <aside class="creator-banner" aria-label="Project by Chloe Mattar"><span class="creator-mark" aria-hidden="true">CM</span><div><span class="creator-label">EXPLORE · EXPERIMENT · UNDERSTAND</span><strong>Chloe Mattar</strong></div><span class="course-badge">GIN450<span>SIMULATION LAB</span></span></aside>
+  <header class="hero">
+    <div>
+      <h1>CISC vs RISC</h1>
+      
+    </div>
+    <p class="intro">One calculation. Two instruction sets. Follow the data, step by step.</p>
+  </header>
+
+  <section class="setup card" aria-labelledby="setup-h">
+    <h2 id="setup-h" class="vh">Choose a task and inputs</h2>
+    <div class="setup-row">
+      <fieldset>
+        <legend>Task</legend>
+        <div class="tasks" id="tasks">
+          <label><input type="radio" name="task" value="add" checked><span>A + B</span></label>
+          <label><input type="radio" name="task" value="sub"><span>A − B</span></label>
+          <label><input type="radio" name="task" value="mul"><span>A × B</span></label>
+          <label><input type="radio" name="task" value="combo"><span>(A + B) × D</span></label>
+          <label><input type="radio" name="task" value="list"><span>Sum a list</span></label>
+        </div>
+      </fieldset>
+      <div>
+        <div class="inputs" id="inputs"></div>
+        <p class="hint" id="limits"></p>
+      </div>
+      <button class="btn" id="example" type="button" style="align-self:center">New example</button>
+    </div>
+    <div id="errors" role="alert"></div>
+    <p class="statement" id="statement"></p>
+  </section>
+
+  <section class="card predict-card" aria-labelledby="predict-h">
+    <details><summary>Make a prediction <span class="optional">optional</span></summary><div class="predict">
+      <h2 id="predict-h">Before you run</h2>
+      <fieldset>
+        <legend>Which processor will execute more instructions?</legend>
+        <div class="choices">
+          <label><input type="radio" name="p1" value="CISC">CISC</label>
+          <label><input type="radio" name="p1" value="RISC">RISC</label>
+          <label><input type="radio" name="p1" value="same">Same number</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Will it also need more clock cycles?</legend>
+        <div class="choices">
+          <label><input type="radio" name="p2" value="yes">Yes</label>
+          <label><input type="radio" name="p2" value="no">No</label>
+          <label><input type="radio" name="p2" value="unsure">Not sure</label>
+        </div>
+      </fieldset>
+    </div></details>
+  </section>
+
+  <div class="toolbar" role="group" aria-label="Controls for both processors">
+    <button class="run-both" id="run-both" type="button">Run both</button>
+    <button class="btn" id="pause-both" type="button" disabled>Pause both</button>
+    <button class="btn" id="reset" type="button">Reset all</button>
+    <div class="speed">
+      <label for="speed">Speed</label>
+      <input type="range" id="speed" min="0" max="6" step="1" value="2" aria-valuetext="1×">
+      <output id="speed-out" for="speed">1×</output>
+    </div>
+  </div>
+
+  <div class="panels" id="panels"></div>
+
+  <section class="compare card" aria-labelledby="cmp-h" id="compare">
+    <h2 id="cmp-h">Comparison</h2>
+    <p class="pending" id="cmp-pending">Run both processors to compare them side by side.</p>
+    <div id="cmp-body" hidden>
+      <div class="takeaways" id="cmp-takeaways"></div>
+      <details class="explain-results"><summary>Explain these results</summary>
+      <div class="table-wrap">
+        <table>
+          <caption class="vh">CISC and RISC results for the same task</caption>
+          <thead><tr><th scope="col">Measure</th><th scope="col" class="c">CISC</th><th scope="col" class="r">RISC</th></tr></thead>
+          <tbody id="cmp-rows"></tbody>
+        </table>
+      </div>
+      <div class="why" id="cmp-why"></div>
+      </details>
+      <div class="feedback" id="cmp-feedback" hidden></div>
+    </div>
+  </section>
+
+  <div class="more">
+    <section class="card timing" aria-labelledby="timing-h">
+      <details id="timing">
+        <summary><h2 id="timing-h">Timing assumptions</h2></summary>
+        <table>
+          <thead><tr><th scope="col">Internal action</th><th scope="col">CISC</th><th scope="col">RISC</th></tr></thead>
+          <tbody id="cost-rows"></tbody>
+        </table>
+        <p>Every instruction starts with fetch &amp; decode. CISC pays more there because its instructions vary in length and can expand into several internal steps; RISC uses one fixed format. All other costs are the same for both.</p>
+        <p>Counters come from the actions the simulator actually executes. Animation speed only changes how fast you watch; it never changes the cycle count.</p>
+        <p>This model runs one action at a time, with no pipelining, caches, or overlap. Real processors do all of these, so the cycle counts here show the trade-off, not which design is faster.</p>
+      </details>
+    </section>
+    <section class="card gloss" aria-labelledby="gloss-h">
+      <details>
+        <summary><h2 id="gloss-h">Glossary</h2></summary>
+        <dl>
+          <dt>Instruction</dt><dd>One command in a program, such as ADD or LOAD. The processor fetches it, decodes it, and carries it out through one or more internal actions.</dd>
+          <dt>Register</dt><dd>A tiny, very fast storage slot inside the processor. These models each have four: R0 to R3.</dd>
+          <dt>Memory</dt><dd>Larger storage outside the processor that holds the program's data, here A, B, D, the list X, and the result RES. Reaching it takes longer than reaching a register.</dd>
+          <dt>ALU</dt><dd>Arithmetic logic unit: the circuit that actually adds, subtracts, and multiplies. It takes two inputs and produces one output.</dd>
+          <dt>LOAD</dt><dd>A RISC instruction that copies a value from memory into a register. In RISC, it is one of only two instructions allowed to touch memory.</dd>
+          <dt>STORE</dt><dd>A RISC instruction that copies a value from a register into memory. The other memory instruction.</dd>
+          <dt>Clock cycle</dt><dd>One tick of the processor's clock, the basic unit of time. Each internal action costs some number of cycles; this simulation uses the costs in the timing assumptions.</dd>
+        </dl>
+      </details>
+    </section>
+    <section class="card about" aria-labelledby="about-h">
+      <details>
+        <summary><h2 id="about-h">About this model</h2></summary>
+        <p>Both instruction sets are simplified teaching inventions. The assembly is educational pseudocode, not real x86 or ARM code.</p>
+        <p>CISC (complex instruction set computer) lets a single instruction read memory, compute, and write memory. RISC (reduced instruction set computer) keeps instructions simple: only LOAD and STORE use memory, and arithmetic works on registers.</p>
+        <p>Neither approach is always faster. Real results depend on the program, the instruction set, the compiler, and how the processor is built. Many modern CISC chips translate instructions into simpler internal operations, and many RISC chips overlap instructions heavily. Not every RISC instruction takes one cycle, and CISC does not always use fewer instructions.</p>
+      </details>
+    </section>
+  </div>
+</main>
+<script src="script.js"></script>
+<script src="presentation.js"></script>
+</body>
+</html>
